@@ -6,5 +6,5 @@ boilerplate for .net core web app
 - AspNetCore 2.2
 - EntityFrameworkCore
 - EntityFrameworkCore.UnitOfWork
-- Sqlite
+- SQLite
 - SignalR
