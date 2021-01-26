@@ -7,3 +7,4 @@ boilerplate for .net core web app
 - Microsoft.EntityFrameworkCore
 - Microsoft.EntityFrameworkCore.UnitOfWork
 - Microsoft.EntityFrameworkCore.Sqlite
+- SignalR
