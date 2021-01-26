@@ -12,11 +12,13 @@ namespace NetCoreApp.Business
   {
     private readonly IUnitOfWork _unitOfWork;
     private readonly DatabaseContext _databaseContext;
+    private readonly IBroadcasterService _broadcasterService;
 
-    public UserService( IUnitOfWork unitOfWork, DatabaseContext databaseContext )
+    public UserService( IUnitOfWork unitOfWork, DatabaseContext databaseContext, IBroadcasterService broadcasterService )
     {
       _unitOfWork = unitOfWork;
       _databaseContext = databaseContext;
+      _broadcasterService = broadcasterService;
     }
 
     public ServiceResponse<User> Create( User user )
@@ -34,6 +36,8 @@ namespace NetCoreApp.Business
           transaction.Commit();
 
           createdUser = ServiceHelper.GetFirstOrDefault( userRepo, e => !e.IsDeleted, null, source => source.OrderByDescending( e => e.CreatedTime ) );
+
+          OnUserDataUpdated( true );
         }
         catch( ServiceResponseException e )
         {
@@ -123,6 +127,8 @@ namespace NetCoreApp.Business
           transaction.Commit();
 
           updatedUser = ServiceHelper.GetFirstOrDefault( userRepo, e => e.Id == id && !e.IsDeleted, null, null );
+
+          OnUserDataUpdated( true );
         }
         catch( ServiceResponseException e )
         {
@@ -163,6 +169,8 @@ namespace NetCoreApp.Business
           userRepo.Update( existingUser );
           _unitOfWork.SaveChanges();
           transaction.Commit();
+
+          OnUserDataUpdated( true );
         }
         catch( ServiceResponseException e )
         {
@@ -179,6 +187,11 @@ namespace NetCoreApp.Business
       }
 
       return new ServiceResponse<bool>( ServiceResponseCode.Ok, true );
+    }
+
+    private void OnUserDataUpdated(object arg)
+    {
+      _broadcasterService.Send( "OnUserDataUpdated", arg );
     }
   }
 }
