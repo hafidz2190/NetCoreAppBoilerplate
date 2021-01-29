@@ -11,5 +11,6 @@ namespace NetCoreApp.Business
     ServiceResponse<List<User>> Read();
     ServiceResponse<User> Update( string id, Dictionary<string, object> propertyMap );
     ServiceResponse<bool> Delete( string id );
+    ServiceResponse<bool> Delete( List<string> ids );
   }
 }

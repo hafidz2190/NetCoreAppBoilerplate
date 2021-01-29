@@ -45,6 +45,12 @@ namespace NetCoreApp.Controllers
     {
       return _userService.Delete( id );
     }
+
+    [HttpPost( "delete" )]
+    public dynamic Delete( List<string> ids )
+    {
+      return _userService.Delete( ids );
+    }
   }
 
   public class UpdateUserArg

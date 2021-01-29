@@ -189,6 +189,52 @@ namespace NetCoreApp.Business
       return new ServiceResponse<bool>( ServiceResponseCode.Ok, true );
     }
 
+    public ServiceResponse<bool> Delete( List<string> ids )
+    {
+      using( var transaction = _databaseContext.Database.BeginTransaction() )
+      {
+        try
+        {
+          var userRepo = _unitOfWork.GetRepository<User>();
+
+          var existingUsers = ServiceHelper.GetList( userRepo, e => ids.Contains( e.Id ) && !e.IsDeleted, null, null );
+
+          if( existingUsers.Count == 0 )
+          {
+            return new ServiceResponse<bool>( ServiceResponseCode.Ok, true );
+          }
+
+          foreach( var existingUser in existingUsers )
+          {
+            existingUser.Version = existingUser.Version + 1;
+            existingUser.LastModifiedTime = DateTime.Now;
+            existingUser.IsDeleted = true;
+
+            userRepo.Update( existingUser );
+          }
+
+          _unitOfWork.SaveChanges();
+          transaction.Commit();
+
+          OnUserDataUpdated( true );
+        }
+        catch( ServiceResponseException e )
+        {
+          transaction.Rollback();
+
+          return new ServiceResponse<bool>( e.ServiceResponse.ServiceResponseCode, false, null );
+        }
+        catch( Exception e )
+        {
+          transaction.Rollback();
+
+          return new ServiceResponse<bool>( ServiceResponseCode.UserServiceGenericError, false, e );
+        }
+      }
+
+      return new ServiceResponse<bool>( ServiceResponseCode.Ok, true );
+    }
+
     private void OnUserDataUpdated(object arg)
     {
       _broadcasterService.Send( "OnUserDataUpdated", arg );
