@@ -37,9 +37,9 @@ namespace NetCoreApp
       services.AddCors( options =>
       {
         options.AddPolicy( "AllowCors", policy => policy
+          .AllowAnyOrigin()
           .AllowAnyHeader()
           .AllowAnyMethod()
-          .SetIsOriginAllowed( ( host ) => true )
           .AllowCredentials()
         );
       } );
@@ -59,6 +59,8 @@ namespace NetCoreApp
         // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
       }
+
+      app.UseCors( "AllowCors" );
 
       app.UseSignalR( routes =>
       {
