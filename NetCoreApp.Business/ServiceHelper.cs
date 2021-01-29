@@ -21,7 +21,10 @@ namespace NetCoreApp.Business
             "IsDeleted"
           };
 
-      readOnlyKeys.AddRange( excludedKeys );
+      if( excludedKeys != null )
+      {
+        readOnlyKeys.AddRange( excludedKeys );
+      }
 
       foreach( var kvp in propertyMap )
       {
