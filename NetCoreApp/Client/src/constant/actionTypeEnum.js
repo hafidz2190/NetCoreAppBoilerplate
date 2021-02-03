@@ -1,0 +1,3 @@
+export const SET_SELECTED_SIDE_MENU = 'SET_SELECTED_SIDE_MENU';
+
+export default SET_SELECTED_SIDE_MENU;
