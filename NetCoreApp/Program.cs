@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace NetCoreApp
 {
@@ -12,6 +13,7 @@ namespace NetCoreApp
 
     public static IWebHostBuilder CreateWebHostBuilder( string[] args ) =>
       WebHost.CreateDefaultBuilder( args )
+        .UseWebRoot( Path.Combine( Directory.GetCurrentDirectory(), "wwwroot" ) )
         .UseStartup<Startup>();
   }
 }

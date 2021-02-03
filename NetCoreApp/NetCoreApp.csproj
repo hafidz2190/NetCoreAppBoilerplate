@@ -27,4 +27,12 @@
     </Content>
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="rd /s /q &quot;$(TargetDir)wwwroot&quot;" />
+  </Target>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;$(ProjectDir)Client\build\*.*&quot; &quot;$(TargetDir)wwwroot&quot; /Y /I /E" />
+  </Target>
+
 </Project>

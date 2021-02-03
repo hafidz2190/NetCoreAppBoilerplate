@@ -40,7 +40,6 @@ namespace NetCoreApp
           .AllowAnyOrigin()
           .AllowAnyHeader()
           .AllowAnyMethod()
-          .AllowCredentials()
         );
       } );
 
@@ -67,7 +66,8 @@ namespace NetCoreApp
         routes.MapHub<MainHub>( "/hub/main" );
       } );
 
-      app.UseHttpsRedirection();
+      app.UseDefaultFiles();
+      app.UseStaticFiles();
       app.UseMvc();
 
       using( IServiceScope serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope() )
