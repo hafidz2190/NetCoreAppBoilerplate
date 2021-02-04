@@ -43,14 +43,13 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 function Users({
-  contentRef,
+  contentHeight,
   userBusinessCreateUser,
   userBusinessFetchUsers,
   userBusinessUpdateUser,
   userBusinessDeleteUsers,
 }) {
   const [loading, setLoading] = useState(false);
-  const [tableHeight, setTableHeight] = useState(null);
   const [dataSource, setDataSource] = useState(DATA_SOURCE);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [userModalVisible, setUserModalVisible] = useState(false);
@@ -69,8 +68,6 @@ function Users({
   };
 
   useEffect(() => {
-    setTableHeight(contentRef.current?.clientHeight);
-
     const init = async () => {
       await fetchData();
     };
@@ -207,18 +204,18 @@ function Users({
       <Row>
         <Col flex="1">
           {
-            (loading || !tableHeight) && (
-              <div style={{ height: tableHeight - 63, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            (loading || !contentHeight) && (
+              <div style={{ height: contentHeight - 63, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Spin size="large" />
               </div>
             )
           }
           {
-            !loading && tableHeight !== null && (
+            !loading && contentHeight !== null && (
               <Table
                 dataSource={dataSource}
                 columns={COLUMN_DEFINITIONS}
-                scroll={{ y: tableHeight - 256 }}
+                scroll={{ y: contentHeight - 176 }}
                 rowSelection={tableRowSelection}
                 rowKey="id"
               />
@@ -282,7 +279,7 @@ function Users({
 }
 
 Users.propTypes = {
-  contentRef: PropTypes.any.isRequired,
+  contentHeight: PropTypes.any.isRequired,
   userBusinessCreateUser: PropTypes.func.isRequired,
   userBusinessFetchUsers: PropTypes.func.isRequired,
   userBusinessUpdateUser: PropTypes.func.isRequired,

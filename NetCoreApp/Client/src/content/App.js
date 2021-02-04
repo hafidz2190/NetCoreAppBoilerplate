@@ -37,8 +37,17 @@ function App({
   const [notificationActive, setNotificationActive] = useState(false);
   const [notificationPopoverVisible, setNotificationPopoverVisible] = useState(false);
   const [notifierDate, setNotifierDate] = useState(null);
+  const [contentHeight, setContentHeight] = useState(null);
 
   const contentRef = useRef();
+
+  const resizeHandler = () => {
+    if (!contentRef || !contentRef.current) {
+      return;
+    }
+
+    setContentHeight(contentRef.current.clientHeight);
+  };
 
   useEffect(() => {
     const init = async () => {
@@ -51,7 +60,14 @@ function App({
       });
     };
 
+    window.addEventListener('resize', resizeHandler);
+
     init();
+    resizeHandler();
+
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
   }, []);
 
   const onSiderCollapse = () => {
@@ -120,7 +136,10 @@ function App({
               }
               {
                 appStore.selectedSideMenu === USERS && (
-                  <Users key={notifierDate} contentRef={contentRef} />
+                  <Users
+                    key={notifierDate}
+                    contentHeight={contentHeight}
+                  />
                 )
               }
             </div>
