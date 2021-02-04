@@ -35,3 +35,4 @@ npm run-script build
 cd NetCoreApp\bin\Debug\netcoreapp2.2
 dotnet .\NetCoreApp.dll
 ```
+- open http://localhost:8000 in browser
