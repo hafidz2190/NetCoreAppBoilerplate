@@ -237,7 +237,7 @@ namespace NetCoreApp.Business
 
     private void OnUserDataUpdated(object arg)
     {
-      _broadcasterService.Send( "OnUserDataUpdated", arg );
+      _broadcasterService?.Send( "OnUserDataUpdated", arg );
     }
   }
 }
