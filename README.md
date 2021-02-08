@@ -8,6 +8,7 @@ boilerplate for .net core web app with simple example of database crud, rest api
 - EntityFrameworkCore.UnitOfWork
 - SQLite
 - SignalR
+- xUnit
 
 ### frontend
 - React
